@@ -1,24 +1,30 @@
 import React from "react";
 import NinjaProfileCard from "./NinjaProfileCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Profiles() {
-  //   const [allNinjas, setAllNinjas] = useEffect([]);
+  const [allNinjas, setAllNinjas] = useState([]);
 
   useEffect(() => {
     fetch("https://api.tretton37.com/ninjas")
       .then((result) => result.json())
       .then((data) => {
-        console.log(data);
-        // setAllNinjas(data.data);
+        setAllNinjas(data);
+        // console.log(data[0].office);
+        console.log(allNinjas[1].office);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
   return (
     <>
-      <NinjaProfileCard />
+      {allNinjas.map((ninja, index) => (
+        <div>
+          <NinjaProfileCard ninja={ninja} index={index} />
+        </div>
+      ))}
     </>
   );
 }

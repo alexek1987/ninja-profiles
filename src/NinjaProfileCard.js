@@ -3,14 +3,14 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import styled from "styled-components";
 
-function NinjaProfileCard() {
+function NinjaProfileCard({ ninja, index }) {
   return (
     <NinjaProfileCardContainer>
-      <img src="https://kitt.lewagon.com/placeholder/users/alexek1987" />
+      <img src={ninja.imagePortraitUrl} />
       <NinjaProfileProfileInfo>
         <NinjaProfileCarText>
-          <h2>Alex Eklund</h2>
-          <p>Office: Lund</p>
+          <h2>{ninja.name}</h2>
+          <p>Office: {ninja.office}</p>
         </NinjaProfileCarText>
         <NinjaSocialIcons>
           <LinkedInIcon />
