@@ -6,7 +6,7 @@ import styled from "styled-components";
 import placeholder from "./assets/placeholder.png";
 
 function NinjaProfileCard({ ninja }) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(ninja.imagePortraitUrl ? true : false);
   const [failed, setFailed] = useState(false);
 
   const onLoadHandler = () => {
@@ -22,7 +22,7 @@ function NinjaProfileCard({ ninja }) {
     <NinjaProfileCardContainer>
       {loading && <div>Loading...</div>}
 
-      {failed ? (
+      {failed || !ninja.imagePortraitUrl ? (
         <PlaceHolderImage src={placeholder} />
       ) : (
         <NinjaImage
@@ -43,7 +43,7 @@ function NinjaProfileCard({ ninja }) {
             </SocialLink>
           )}
           {ninja.gitHub && (
-            <SocialLink href={`https://github.com/${ninja.linkedIn}`}>
+            <SocialLink href={`https://github.com/${ninja.gitHub}`}>
               <GitHubIcon />
             </SocialLink>
           )}

@@ -1,35 +1,31 @@
-import React from "react";
 import NinjaProfileCard from "./NinjaProfileCard";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import useFetch from "./useFetch";
 
 function AllProfiles() {
-  const [allNinjas, setAllNinjas] = useState([]);
-  const [filterNinjas, setFilterNinjas] = useState("All");
-  const [filterNinjaNames, setFilterNinjaNames] = useState("default");
-  const [filterNinjaLinks, setFilterNinjaLinks] = useState("all");
+  const { loading, error, data, setData } = useFetch(
+    "https://api.tretton37.com/ninjas"
+  );
 
-  const [count, setCount] = useState(0);
-  const counter = () => {
-    setCount(count + 1);
+  const [filters, setFilters] = useState({});
+
+  // handler for all states regarding filtering
+  const onChangeHandler = (e) => {
+    const name = e.target.name;
+    let value = e.target.value;
+    if (value === "0") {
+      value = Number(value);
+    }
+    // setFilters({ ...filters, [name]: value });
+    setFilters({ [name]: value });
   };
 
   useEffect(() => {
-    fetch("https://api.tretton37.com/ninjas")
-      .then((result) => result.json())
-      .then((data) => {
-        setAllNinjas(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  useEffect(() => {
-    switch (filterNinjaNames) {
+    switch (filters["names"]) {
       case "ascend":
         {
-          let sortedNamesArray = [...allNinjas];
+          let sortedNamesArray = [...data];
 
           sortedNamesArray = sortedNamesArray.sort((a, b) => {
             const charA = a.name[0];
@@ -40,13 +36,13 @@ function AllProfiles() {
               return -1;
             }
           });
-          setAllNinjas(sortedNamesArray);
+          setData(sortedNamesArray);
         }
         break;
 
       case "decend":
         {
-          let sortedNamesArray = [...allNinjas];
+          let sortedNamesArray = [...data];
 
           sortedNamesArray = sortedNamesArray.sort((a, b) => {
             const charA = a.name[0];
@@ -57,24 +53,24 @@ function AllProfiles() {
               return 1;
             }
           });
-          setAllNinjas(sortedNamesArray);
+          setData(sortedNamesArray);
         }
         break;
-
       default:
         break;
     }
-  }, [filterNinjaNames]);
+  }, [filters["names"]]);
 
   return (
     <>
       <NinjaLabel htmlFor="offices">Offices</NinjaLabel>
       <NinjaSelect
+        name="office"
         id="offices"
-        onChange={(e) => setFilterNinjas(e.target.value)}
-        value={filterNinjas}
+        onChange={onChangeHandler}
+        value={filters["office"]}
       >
-        <NinjaOption value="All">Alla</NinjaOption>
+        <NinjaOption value={0}>Alla</NinjaOption>
         <NinjaOption value="Lund">Lund</NinjaOption>
         <NinjaOption value="Stockholm">Stockholm</NinjaOption>
         <NinjaOption value="Helsingborg">Helsingborg</NinjaOption>
@@ -84,10 +80,11 @@ function AllProfiles() {
       <NinjaLabel htmlFor="names">Names</NinjaLabel>
       <NinjaSelect
         id="names"
-        onChange={(e) => setFilterNinjaNames(e.target.value)}
-        value={filterNinjaNames}
+        name="names"
+        onChange={onChangeHandler}
+        value={filters["names"]}
       >
-        <NinjaOption value="default">Default</NinjaOption>
+        <NinjaOption value={0}>Default</NinjaOption>
         <NinjaOption value="ascend">Ascending</NinjaOption>
         <NinjaOption value="decend">Decending</NinjaOption>
       </NinjaSelect>
@@ -95,24 +92,23 @@ function AllProfiles() {
       <NinjaLabel htmlFor="links">Social Links</NinjaLabel>
       <NinjaSelect
         id="links"
-        onChange={(e) => setFilterNinjaLinks(e.target.value)}
-        value={filterNinjaLinks}
+        name="links"
+        onChange={onChangeHandler}
+        value={filters["links"]}
       >
-        <NinjaOption value="all">All</NinjaOption>
+        <NinjaOption value={0}>All</NinjaOption>
         <NinjaOption value="gitHub">Github</NinjaOption>
         <NinjaOption value="twitter">Twitter</NinjaOption>
         <NinjaOption value="linkedIn">LinkedIn</NinjaOption>
       </NinjaSelect>
 
       <AllProfilesContainer>
-        {allNinjas.map((ninja, index) =>
-          filterNinjas === ninja.office ? (
-            <NinjaCard>
-              <NinjaProfileCard ninja={ninja} key={() => counter} />
-            </NinjaCard>
-          ) : filterNinjas === "All" ? (
-            <NinjaCard>
-              <NinjaProfileCard ninja={ninja} key={() => counter} />
+        {data.map((ninja, index) =>
+          (filters.office && filters.office === ninja.office) ||
+          (filters.links && ninja[filters.links]) ||
+          (!filters.office && !filters.links) ? (
+            <NinjaCard key={index}>
+              <NinjaProfileCard ninja={ninja} />
             </NinjaCard>
           ) : null
         )}
