@@ -6,12 +6,54 @@ import styled from "styled-components";
 function AllProfiles() {
   const [allNinjas, setAllNinjas] = useState([]);
   const [filterNinjas, setFilterNinjas] = useState("All");
+  const [filterNinjaNames, setFilterNinjaNames] = useState("default");
 
   const [count, setCount] = useState(0);
 
   const counter = () => {
     setCount(count + 1);
   };
+
+  useEffect(() => {
+    switch (filterNinjaNames) {
+      case "ascend":
+        {
+          let sortedNamesArray = [...allNinjas];
+
+          sortedNamesArray = sortedNamesArray.sort((a, b) => {
+            const charA = a.name[0];
+            const charB = b.name[0];
+            if (charA > charB) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+          setAllNinjas(sortedNamesArray);
+        }
+        break;
+
+      case "decend":
+        {
+          let sortedNamesArray = [...allNinjas];
+
+          sortedNamesArray = sortedNamesArray.sort((a, b) => {
+            const charA = a.name[0];
+            const charB = b.name[0];
+            if (charA > charB) {
+              return -1;
+            } else {
+              return 1;
+            }
+          });
+          setAllNinjas(sortedNamesArray);
+        }
+        break;
+
+      default:
+        break;
+    }
+  }, [filterNinjaNames]);
 
   useEffect(() => {
     fetch("https://api.tretton37.com/ninjas")
@@ -37,6 +79,17 @@ function AllProfiles() {
         <NinjaOption value="Stockholm">Stockholm</NinjaOption>
         <NinjaOption value="Helsingborg">Helsingborg</NinjaOption>
         <NinjaOption value="Ljubljana">Ljubljana</NinjaOption>
+      </NinjaSelect>
+
+      <NinjaLabel htmlFor="names">Names</NinjaLabel>
+      <NinjaSelect
+        id="names"
+        onChange={(e) => setFilterNinjaNames(e.target.value)}
+        value={filterNinjaNames}
+      >
+        <NinjaOption value="default">Default</NinjaOption>
+        <NinjaOption value="ascend">Ascending</NinjaOption>
+        <NinjaOption value="decend">Decending</NinjaOption>
       </NinjaSelect>
 
       <AllProfilesContainer>
