@@ -37,9 +37,21 @@ function NinjaProfileCard({ ninja }) {
           <p>Office: {ninja.office}</p>
         </NinjaProfileCardInfo>
         <NinjaSocialIcons>
-          <LinkedInIcon />
-          <GitHubIcon />
-          <TwitterIcon />
+          {ninja.linkedIn && (
+            <SocialLink href={`https://www.linkedin.com/${ninja.linkedIn}`}>
+              <LinkedInIcon />
+            </SocialLink>
+          )}
+          {ninja.gitHub && (
+            <SocialLink href={`https://github.com/${ninja.linkedIn}`}>
+              <GitHubIcon />
+            </SocialLink>
+          )}
+          {ninja.twitter && (
+            <SocialLink href={`https://twitter.com/${ninja.twitter}`}>
+              <TwitterIcon />
+            </SocialLink>
+          )}
         </NinjaSocialIcons>
       </NinjaProfileProfileInfo>
     </NinjaProfileCardContainer>
@@ -99,3 +111,5 @@ const NinjaSocialIcons = styled.div`
 const PlaceHolderImage = styled.img`
   max-height: 230px;
 `;
+
+const SocialLink = styled.a``;

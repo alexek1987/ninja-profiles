@@ -7,12 +7,23 @@ function AllProfiles() {
   const [allNinjas, setAllNinjas] = useState([]);
   const [filterNinjas, setFilterNinjas] = useState("All");
   const [filterNinjaNames, setFilterNinjaNames] = useState("default");
+  const [filterNinjaLinks, setFilterNinjaLinks] = useState("all");
 
   const [count, setCount] = useState(0);
-
   const counter = () => {
     setCount(count + 1);
   };
+
+  useEffect(() => {
+    fetch("https://api.tretton37.com/ninjas")
+      .then((result) => result.json())
+      .then((data) => {
+        setAllNinjas(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     switch (filterNinjaNames) {
@@ -55,17 +66,6 @@ function AllProfiles() {
     }
   }, [filterNinjaNames]);
 
-  useEffect(() => {
-    fetch("https://api.tretton37.com/ninjas")
-      .then((result) => result.json())
-      .then((data) => {
-        setAllNinjas(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
     <>
       <NinjaLabel htmlFor="offices">Offices</NinjaLabel>
@@ -90,6 +90,18 @@ function AllProfiles() {
         <NinjaOption value="default">Default</NinjaOption>
         <NinjaOption value="ascend">Ascending</NinjaOption>
         <NinjaOption value="decend">Decending</NinjaOption>
+      </NinjaSelect>
+
+      <NinjaLabel htmlFor="links">Social Links</NinjaLabel>
+      <NinjaSelect
+        id="links"
+        onChange={(e) => setFilterNinjaLinks(e.target.value)}
+        value={filterNinjaLinks}
+      >
+        <NinjaOption value="all">All</NinjaOption>
+        <NinjaOption value="gitHub">Github</NinjaOption>
+        <NinjaOption value="twitter">Twitter</NinjaOption>
+        <NinjaOption value="linkedIn">LinkedIn</NinjaOption>
       </NinjaSelect>
 
       <AllProfilesContainer>
