@@ -1,5 +1,5 @@
 import NinjaProfileCard from "./NinjaProfileCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import useFetch from "./useFetch";
 
@@ -7,8 +7,32 @@ function AllProfiles() {
   const { loading, error, data, setData } = useFetch(
     "https://api.tretton37.com/ninjas"
   );
-
+  console.log(data);
   const [filters, setFilters] = useState({});
+
+  const [loadMore, setLoadMore] = useState(false);
+  const [indexRange, setIndexRange] = useState({ endIndex: 19 });
+
+  const observer = useRef();
+  const lastDataElementRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          setLoadMore(true);
+          setTimeout(() => {
+            setIndexRange((prevState) => ({
+              endIndex: prevState.endIndex + 20,
+            }));
+            setLoadMore(false);
+          }, 2000);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, loadMore]
+  );
 
   // handler for all states regarding filtering
   const onChangeHandler = (e) => {
@@ -19,14 +43,15 @@ function AllProfiles() {
     }
     // setFilters({ ...filters, [name]: value });
     setFilters({ [name]: value });
+    console.log(filters);
   };
 
   useEffect(() => {
+    // sorting names
     switch (filters["names"]) {
       case "ascend":
         {
           let sortedNamesArray = [...data];
-
           sortedNamesArray = sortedNamesArray.sort((a, b) => {
             const charA = a.name[0];
             const charB = b.name[0];
@@ -43,7 +68,6 @@ function AllProfiles() {
       case "decend":
         {
           let sortedNamesArray = [...data];
-
           sortedNamesArray = sortedNamesArray.sort((a, b) => {
             const charA = a.name[0];
             const charB = b.name[0];
@@ -55,11 +79,40 @@ function AllProfiles() {
           });
           setData(sortedNamesArray);
         }
+
         break;
       default:
         break;
     }
-  }, [filters["names"]]);
+
+    // sorted offices
+
+    if (filters["office"]) {
+      let sortedOffices = [...data];
+      sortedOffices = sortedOffices.sort((a, b) => {
+        if (a.office === filters["office"]) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+      setData(sortedOffices);
+    }
+
+    // sorted links
+
+    if (filters["links"]) {
+      let sortedLinks = [...data];
+      sortedLinks = sortedLinks.sort((a, b) => {
+        if (a[filters.links]) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+      setData(sortedLinks);
+    }
+  }, [filters]);
 
   return (
     <>
@@ -96,21 +149,29 @@ function AllProfiles() {
         onChange={onChangeHandler}
         value={filters["links"]}
       >
-        <NinjaOption value={0}>All</NinjaOption>
+        <NinjaOption value={0}>Alla</NinjaOption>
         <NinjaOption value="gitHub">Github</NinjaOption>
         <NinjaOption value="twitter">Twitter</NinjaOption>
         <NinjaOption value="linkedIn">LinkedIn</NinjaOption>
       </NinjaSelect>
 
       <AllProfilesContainer>
-        {data.map((ninja, index) =>
-          (filters.office && filters.office === ninja.office) ||
-          (filters.links && ninja[filters.links]) ||
-          (!filters.office && !filters.links) ? (
-            <NinjaCard key={index}>
-              <NinjaProfileCard ninja={ninja} />
-            </NinjaCard>
-          ) : null
+        {data.map((ninja, index) => {
+          if (index <= indexRange.endIndex) {
+            return (filters.office && filters.office === ninja.office) ||
+              (filters.links && ninja[filters.links]) ||
+              (!filters.office && !filters.links) ? (
+              <NinjaCard
+                ref={index === indexRange.endIndex ? lastDataElementRef : null}
+                key={index}
+              >
+                <NinjaProfileCard ninja={ninja} />
+              </NinjaCard>
+            ) : null;
+          }
+        })}
+        {loadMore && (
+          <div style={{ textAlign: "center", width: "100vw" }}>Loading....</div>
         )}
       </AllProfilesContainer>
     </>

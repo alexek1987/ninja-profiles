@@ -21,7 +21,7 @@ function useFetch(url) {
     return () => {
       unmountRef.current = true;
     };
-  }, []);
+  }, [url]);
 
   return { loading, data, error, setData };
 }
