@@ -2,10 +2,10 @@ import NinjaProfileCard from "./NinjaProfileCard";
 import { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import useFetch from "./useFetch";
-import { CardAnimation } from "./CardAnimation";
 import { motion } from "framer-motion";
 
 function AllProfiles() {
+  // eslint-disable-next-line
   const { loading, error, data, setData } = useFetch(
     "https://api.tretton37.com/ninjas"
   );
@@ -27,7 +27,7 @@ function AllProfiles() {
   };
   const lastDataElementRef = useCallback(
     (node) => {
-      // when loading is true, exit the call back
+      // when loading is true, exit the callback
       if (loading) return;
       // if there's an observer in the reference then disconnect it
       if (observer.current) observer.current.disconnect();
@@ -50,7 +50,7 @@ function AllProfiles() {
       // watch the last element on current page in the dom
       if (node) observer.current.observe(node);
     },
-    [loading, loadMore]
+    [loading]
   );
 
   useEffect(() => {
@@ -119,6 +119,7 @@ function AllProfiles() {
       });
       setData(sortedLinks);
     }
+    // eslint-disable-next-line
   }, [filters]);
 
   return (
@@ -166,6 +167,7 @@ function AllProfiles() {
       </NinjaSelectWrapper>
 
       <AllProfilesContainer>
+        {/* eslint-disable-next-line */}
         {data.map((ninja, index) => {
           // as long as index in within the range, then check if any filters are on and render out ui according to range and filters
           if (index <= indexRange.endIndex) {
