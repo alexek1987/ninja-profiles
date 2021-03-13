@@ -7,13 +7,15 @@ function AllProfiles() {
   const { loading, error, data, setData } = useFetch(
     "https://api.tretton37.com/ninjas"
   );
+
   console.log(data);
+
   const [filters, setFilters] = useState({});
 
   const [loadMore, setLoadMore] = useState(false);
   const [indexRange, setIndexRange] = useState({ endIndex: 19 });
-
   const observer = useRef();
+
   const lastDataElementRef = useCallback(
     (node) => {
       if (loading) return;
@@ -116,44 +118,47 @@ function AllProfiles() {
 
   return (
     <>
-      <NinjaLabel htmlFor="offices">Offices</NinjaLabel>
-      <NinjaSelect
-        name="office"
-        id="offices"
-        onChange={onChangeHandler}
-        value={filters["office"]}
-      >
-        <NinjaOption value={0}>Alla</NinjaOption>
-        <NinjaOption value="Lund">Lund</NinjaOption>
-        <NinjaOption value="Stockholm">Stockholm</NinjaOption>
-        <NinjaOption value="Helsingborg">Helsingborg</NinjaOption>
-        <NinjaOption value="Ljubljana">Ljubljana</NinjaOption>
-      </NinjaSelect>
+      <NinjaSelectWrapper>
+        <NinjaLabel htmlFor="offices">Offices</NinjaLabel>
+        <NinjaSelect
+          name="office"
+          id="offices"
+          onChange={onChangeHandler}
+          value={filters["office"]}
+        >
+          <NinjaOption value={0}>All</NinjaOption>
+          <NinjaOption value="Lund">Lund</NinjaOption>
+          <NinjaOption value="Stockholm">Stockholm</NinjaOption>
+          <NinjaOption value="Helsingborg">Helsingborg</NinjaOption>
+          <NinjaOption value="Ljubljana">Ljubljana</NinjaOption>
+          <NinjaOption value="Borlänge">Borlänge</NinjaOption>
+        </NinjaSelect>
 
-      <NinjaLabel htmlFor="names">Names</NinjaLabel>
-      <NinjaSelect
-        id="names"
-        name="names"
-        onChange={onChangeHandler}
-        value={filters["names"]}
-      >
-        <NinjaOption value={0}>Default</NinjaOption>
-        <NinjaOption value="ascend">Ascending</NinjaOption>
-        <NinjaOption value="decend">Decending</NinjaOption>
-      </NinjaSelect>
+        <NinjaLabel htmlFor="names">Names</NinjaLabel>
+        <NinjaSelect
+          id="names"
+          name="names"
+          onChange={onChangeHandler}
+          value={filters["names"]}
+        >
+          <NinjaOption value={0}>-</NinjaOption>
+          <NinjaOption value="ascend">A-Ö</NinjaOption>
+          <NinjaOption value="decend">Ö-A</NinjaOption>
+        </NinjaSelect>
 
-      <NinjaLabel htmlFor="links">Social Links</NinjaLabel>
-      <NinjaSelect
-        id="links"
-        name="links"
-        onChange={onChangeHandler}
-        value={filters["links"]}
-      >
-        <NinjaOption value={0}>Alla</NinjaOption>
-        <NinjaOption value="gitHub">Github</NinjaOption>
-        <NinjaOption value="twitter">Twitter</NinjaOption>
-        <NinjaOption value="linkedIn">LinkedIn</NinjaOption>
-      </NinjaSelect>
+        <NinjaLabel htmlFor="links">Social Links</NinjaLabel>
+        <NinjaSelect
+          id="links"
+          name="links"
+          onChange={onChangeHandler}
+          value={filters["links"]}
+        >
+          <NinjaOption value={0}>All</NinjaOption>
+          <NinjaOption value="gitHub">Github</NinjaOption>
+          <NinjaOption value="twitter">Twitter</NinjaOption>
+          <NinjaOption value="linkedIn">LinkedIn</NinjaOption>
+        </NinjaSelect>
+      </NinjaSelectWrapper>
 
       <AllProfilesContainer>
         {data.map((ninja, index) => {
@@ -170,9 +175,7 @@ function AllProfiles() {
             ) : null;
           }
         })}
-        {loadMore && (
-          <div style={{ textAlign: "center", width: "100vw" }}>Loading....</div>
-        )}
+        {loadMore && <LoadingDiv>Loading....</LoadingDiv>}
       </AllProfilesContainer>
     </>
   );
@@ -208,6 +211,37 @@ const NinjaCard = styled.div`
   }
 `;
 
-const NinjaSelect = styled.select``;
+const NinjaSelect = styled.select`
+  border: transparent;
+  padding: 7px;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  outline: none;
+`;
+
 const NinjaOption = styled.option``;
-const NinjaLabel = styled.label``;
+
+const NinjaLabel = styled.label`
+  font-weight: 900;
+  font-family: "Roboto", sans-serif;
+  margin-left: 8px;
+  margin-right: 8px;
+`;
+
+const NinjaSelectWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+  padding: 10px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const LoadingDiv = styled.div`
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  width: 150vw;
+`;

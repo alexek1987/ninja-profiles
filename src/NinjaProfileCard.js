@@ -3,7 +3,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import styled from "styled-components";
-import placeholder from "./assets/placeholder.png";
+import placeholder from "./assets/placeholder.jpg";
 
 function NinjaProfileCard({ ninja }) {
   const [loading, setLoading] = useState(ninja.imagePortraitUrl ? true : false);
@@ -20,7 +20,7 @@ function NinjaProfileCard({ ninja }) {
 
   return (
     <NinjaProfileCardContainer>
-      {loading && <div>Loading...</div>}
+      {loading && <LoadingDiv>Loading...</LoadingDiv>}
 
       {failed || !ninja.imagePortraitUrl ? (
         <PlaceHolderImage src={placeholder} />
@@ -64,30 +64,27 @@ const NinjaProfileCardContainer = styled.div`
   overflow: hidden;
   background: #fbfbfd;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  max-width: 270px;
+  min-width: 250px;
+  margin-left: 7px;
+  margin-right: 7px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-
-  > img {
-    height: 250px;
-    width: 100%;
-    margin-top: 12px;
-    object-fit: contain;
-  }
 `;
 
 const NinjaProfileCardInfo = styled.div`
   > h2 {
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 700;
     margin: 0;
+    font-family: "Roboto", sans-serif;
   }
 
   > p {
     font-size: 12px;
     opacity: 0.7;
     margin: 0;
+    font-family: "Roboto", sans-serif;
   }
 `;
 
@@ -99,7 +96,12 @@ const NinjaProfileProfileInfo = styled.div`
   position: relative;
 `;
 
-const NinjaImage = styled.img``;
+const NinjaImage = styled.img`
+  height: 250px;
+  width: 100%;
+  margin-top: 12px;
+  object-fit: contain;
+`;
 
 const NinjaSocialIcons = styled.div`
   .MuiSvgIcon-root:hover {
@@ -109,7 +111,15 @@ const NinjaSocialIcons = styled.div`
 `;
 
 const PlaceHolderImage = styled.img`
-  max-height: 230px;
+  height: 250px;
+  width: 90%;
+  margin-top: 12px;
+  margin-left: 5%;
 `;
 
 const SocialLink = styled.a``;
+
+const LoadingDiv = styled.div`
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+`;
