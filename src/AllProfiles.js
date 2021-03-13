@@ -2,6 +2,8 @@ import NinjaProfileCard from "./NinjaProfileCard";
 import { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import useFetch from "./useFetch";
+import { CardAnimation } from "./CardAnimation";
+import { motion } from "framer-motion";
 
 function AllProfiles() {
   const { loading, error, data, setData } = useFetch(
@@ -10,43 +12,46 @@ function AllProfiles() {
 
   console.log(data);
 
-  const [filters, setFilters] = useState({});
-
   const [loadMore, setLoadMore] = useState(false);
   const [indexRange, setIndexRange] = useState({ endIndex: 19 });
   const observer = useRef();
 
-  const lastDataElementRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          setLoadMore(true);
-          setTimeout(() => {
-            setIndexRange((prevState) => ({
-              endIndex: prevState.endIndex + 20,
-            }));
-            setLoadMore(false);
-          }, 2000);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, loadMore]
-  );
-
+  const [filters, setFilters] = useState({});
   // handler for all states regarding filtering
   const onChangeHandler = (e) => {
     const name = e.target.name;
     let value = e.target.value;
-    if (value === "0") {
-      value = Number(value);
-    }
+    if (value === "0") value = Number(value);
     // setFilters({ ...filters, [name]: value });
     setFilters({ [name]: value });
-    console.log(filters);
   };
+  const lastDataElementRef = useCallback(
+    (node) => {
+      // when loading is true, exit the call back
+      if (loading) return;
+      // if there's an observer in the reference then disconnect it
+      if (observer.current) observer.current.disconnect();
+      // assigning an obserer to the refernce
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          // set load to display loading
+          setLoadMore(true);
+          // setting timeout to fake a loading ui (because the data is already fetched, and no refetch needed)
+          setTimeout(() => {
+            // render out 20 more ninja profiles to ui
+            setIndexRange((prevState) => ({
+              endIndex: prevState.endIndex + 20,
+            }));
+            // disable the loading ui
+            setLoadMore(false);
+          }, 2000);
+        }
+      });
+      // watch the last element on current page in the dom
+      if (node) observer.current.observe(node);
+    },
+    [loading, loadMore]
+  );
 
   useEffect(() => {
     // sorting names
@@ -162,15 +167,26 @@ function AllProfiles() {
 
       <AllProfilesContainer>
         {data.map((ninja, index) => {
+          // as long as index in within the range, then check if any filters are on and render out ui according to range and filters
           if (index <= indexRange.endIndex) {
+            // check if office filter exists is it equal to ninja profile's office
             return (filters.office && filters.office === ninja.office) ||
               (filters.links && ninja[filters.links]) ||
+              // check of no filter
               (!filters.office && !filters.links) ? (
               <NinjaCard
                 ref={index === indexRange.endIndex ? lastDataElementRef : null}
                 key={index}
               >
-                <NinjaProfileCard ninja={ninja} />
+                {/* anything wrapped inside motion.div will be animated */}
+                <motion.div
+                  animate={{
+                    scale: [1, 1, 1, 1, 1],
+                    rotate: [0, 0, 100, 100, 0],
+                  }}
+                >
+                  <NinjaProfileCard ninja={ninja} />
+                </motion.div>
               </NinjaCard>
             ) : null;
           }
