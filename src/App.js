@@ -1,4 +1,4 @@
-import AllProfiles from "./AllProfiles";
+import AllNinjaProfiles from "./AllNinjaProfiles";
 
 function App() {
   return (
@@ -6,7 +6,7 @@ function App() {
       <div
         style={{ marginTop: "100px", marginLeft: "40px", marginRight: "40px" }}
       >
-        <AllProfiles />
+        <AllNinjaProfiles />
       </div>
     </>
   );

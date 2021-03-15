@@ -4,18 +4,17 @@ import styled from "styled-components";
 import useFetch from "./useFetch";
 import { motion } from "framer-motion";
 
-function AllProfiles() {
+function AllNinjaProfiles() {
   // eslint-disable-next-line
   const { loading, error, data, setData } = useFetch(
     "https://api.tretton37.com/ninjas"
   );
-
-  console.log(data);
-
+  // states and observer related to infinite scroll
   const [loadMore, setLoadMore] = useState(false);
   const [indexRange, setIndexRange] = useState({ endIndex: 19 });
   const observer = useRef();
 
+  // state related to filtering
   const [filters, setFilters] = useState({});
   // handler for all states regarding filtering
   const onChangeHandler = (e) => {
@@ -124,57 +123,59 @@ function AllProfiles() {
 
   return (
     <>
-      <NinjaSelectWrapper>
-        <NinjaLabel htmlFor="offices">Offices</NinjaLabel>
-        <NinjaSelect
+      <FilterNinjaSelectWrapper>
+        <p>Filter ninjas:</p>
+        <FilterNinjaLabel htmlFor="offices">Offices</FilterNinjaLabel>
+        <FilterNinjaSelect
           name="office"
           id="offices"
           onChange={onChangeHandler}
           value={filters["office"]}
         >
-          <NinjaOption value={0}>All</NinjaOption>
-          <NinjaOption value="Lund">Lund</NinjaOption>
-          <NinjaOption value="Stockholm">Stockholm</NinjaOption>
-          <NinjaOption value="Helsingborg">Helsingborg</NinjaOption>
-          <NinjaOption value="Ljubljana">Ljubljana</NinjaOption>
-          <NinjaOption value="Borlänge">Borlänge</NinjaOption>
-        </NinjaSelect>
+          <FilterNinjaOption value={0}>All</FilterNinjaOption>
+          <FilterNinjaOption value="Lund">Lund</FilterNinjaOption>
+          <FilterNinjaOption value="Stockholm">Stockholm</FilterNinjaOption>
+          <FilterNinjaOption value="Helsingborg">Helsingborg</FilterNinjaOption>
+          <FilterNinjaOption value="Ljubljana">Ljubljana</FilterNinjaOption>
+          <FilterNinjaOption value="Borlänge">Borlänge</FilterNinjaOption>
+        </FilterNinjaSelect>
 
-        <NinjaLabel htmlFor="names">Names</NinjaLabel>
-        <NinjaSelect
+        <FilterNinjaLabel htmlFor="names">Names</FilterNinjaLabel>
+        <FilterNinjaSelect
           id="names"
           name="names"
           onChange={onChangeHandler}
           value={filters["names"]}
         >
-          <NinjaOption value={0}>-</NinjaOption>
-          <NinjaOption value="ascend">A-Ö</NinjaOption>
-          <NinjaOption value="decend">Ö-A</NinjaOption>
-        </NinjaSelect>
+          <FilterNinjaOption value={0}>-</FilterNinjaOption>
+          <FilterNinjaOption value="ascend">A-Ö</FilterNinjaOption>
+          <FilterNinjaOption value="decend">Ö-A</FilterNinjaOption>
+        </FilterNinjaSelect>
 
-        <NinjaLabel htmlFor="links">Social Links</NinjaLabel>
-        <NinjaSelect
+        <FilterNinjaLabel htmlFor="links">Social Links</FilterNinjaLabel>
+        <FilterNinjaSelect
           id="links"
           name="links"
           onChange={onChangeHandler}
           value={filters["links"]}
         >
-          <NinjaOption value={0}>All</NinjaOption>
-          <NinjaOption value="gitHub">Github</NinjaOption>
-          <NinjaOption value="twitter">Twitter</NinjaOption>
-          <NinjaOption value="linkedIn">LinkedIn</NinjaOption>
-        </NinjaSelect>
-      </NinjaSelectWrapper>
+          <FilterNinjaOption value={0}>All</FilterNinjaOption>
+          <FilterNinjaOption value="gitHub">Github</FilterNinjaOption>
+          <FilterNinjaOption value="twitter">Twitter</FilterNinjaOption>
+          <FilterNinjaOption value="linkedIn">LinkedIn</FilterNinjaOption>
+        </FilterNinjaSelect>
+      </FilterNinjaSelectWrapper>
 
-      <AllProfilesContainer>
+      <AllNinjaProfilesContainer>
         {/* eslint-disable-next-line */}
         {data.map((ninja, index) => {
           // as long as index in within the range, then check if any filters are on and render out ui according to range and filters
           if (index <= indexRange.endIndex) {
-            // check if office filter exists is it equal to ninja profile's office
+            // check if office filter exists and is it equal to ninja profile's office
             return (filters.office && filters.office === ninja.office) ||
+              // check if links exist and then render out ui
               (filters.links && ninja[filters.links]) ||
-              // check of no filter
+              // check if no filter
               (!filters.office && !filters.links) ? (
               <NinjaCard
                 ref={index === indexRange.endIndex ? lastDataElementRef : null}
@@ -194,14 +195,14 @@ function AllProfiles() {
           }
         })}
         {loadMore && <LoadingDiv>Loading....</LoadingDiv>}
-      </AllProfilesContainer>
+      </AllNinjaProfilesContainer>
     </>
   );
 }
 
-export default AllProfiles;
+export default AllNinjaProfiles;
 
-const AllProfilesContainer = styled.div`
+const AllNinjaProfilesContainer = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
@@ -229,7 +230,7 @@ const NinjaCard = styled.div`
   }
 `;
 
-const NinjaSelect = styled.select`
+const FilterNinjaSelect = styled.select`
   border: transparent;
   padding: 7px;
   font-size: 15px;
@@ -238,16 +239,16 @@ const NinjaSelect = styled.select`
   outline: none;
 `;
 
-const NinjaOption = styled.option``;
+const FilterNinjaOption = styled.option``;
 
-const NinjaLabel = styled.label`
+const FilterNinjaLabel = styled.label`
   font-weight: 900;
   font-family: "Roboto", sans-serif;
   margin-left: 8px;
   margin-right: 8px;
 `;
 
-const NinjaSelectWrapper = styled.div`
+const FilterNinjaSelectWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -255,6 +256,9 @@ const NinjaSelectWrapper = styled.div`
   padding: 10px;
   @media (max-width: 768px) {
     flex-direction: column;
+    > p {
+      margin-bottom: 5px;
+    }
   }
 `;
 
