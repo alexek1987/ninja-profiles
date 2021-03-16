@@ -42,7 +42,7 @@ and mapping through the object and logic for infinite scroll is in there. Instea
 
 ## Installation notes
 
--Clone repo
+- Clone repo
 
 - Run npm i
 
