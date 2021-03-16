@@ -49,3 +49,7 @@ and mapping through the object and logic for infinite scroll is in there. Instea
 - Run npm i
 
 - Run npm start
+
+## Deployed version
+
+https://ninja-profiles.web.app/
