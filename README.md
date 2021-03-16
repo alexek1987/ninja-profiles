@@ -35,6 +35,11 @@ on implementing them, I like working with design, and when designing the card co
 the idea was to stay true to the mock up but also add my own slick and clean details to it
 and I also chose a few features which I hadn't done before, such as the infinite infinite scroll feature.
 
+## Thought behind design of code
+
+I wanted to keep the app simple, and not over-engieer it. That's my instead of splitting up some of the logic in the AllNinjaProfiles component and using global state, for example. Both filtering
+and mapping through the object and logic for infinite scroll is in there. Instead in using a custom hook to keep the fetching seperate.
+
 ## Installation notes
 
 -Clone repo
