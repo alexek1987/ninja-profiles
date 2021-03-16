@@ -35,7 +35,7 @@ on implementing them, I like working with design, and when designing the card co
 the idea was to stay true to the mock up but also add my own slick and clean details to it.
 I also chose a few features which I hadn't done before, such as infinite scroll, because
 I think it's a nice feature, and I've already implemented it on other projects of mine too,
-after leaerning how to do it for this challenge!
+after learning how to do it for this challenge!
 
 ## Thought behind design of code
 
