@@ -32,8 +32,8 @@ Works in IE11 ( 1 pt)
 
 I pretty much chose a lot of these features because I thought I could do a good job
 on implementing them, I like working with design, and when designing the card component
-the idea was to stay true to the mock up but also add my own slick and clean details to it
-and I also chose a few features which I hadn't done before, such as the infinite scroll feature.
+the idea was to stay true to the mock up but also add my own slick and clean details to it.
+I also chose a few features which I hadn't done before, such as the infinite scroll feature.
 
 ## Thought behind design of code
 
