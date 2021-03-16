@@ -2,6 +2,11 @@
   "name": "ninja-profiles",
   "version": "0.1.0",
   "private": true,
+  "babel": {
+    "plugins": [
+      "@babel/plugin-transform-arrow-functions"
+    ]
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -40,5 +45,8 @@
       "last 1 safari version",
       "IE 11"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-arrow-functions": "^7.13.0"
   }
 }
