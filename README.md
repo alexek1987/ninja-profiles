@@ -37,7 +37,7 @@ and I also chose a few features which I hadn't done before, such as the infinite
 
 ## Thought behind design of code
 
-I wanted to keep the app simple, and not over-engieer it. That's my instead of splitting up some of the logic in the AllNinjaProfiles component and using global state, for example. Both filtering
+I wanted to keep the app simple, and not over-engineer it. That's why instead of splitting up some of the logic in the AllNinjaProfiles component and using global state, for example. Both filtering
 and mapping through the object and logic for infinite scroll is in there. Instead in using a custom hook to keep the fetching seperate.
 
 ## Installation notes
