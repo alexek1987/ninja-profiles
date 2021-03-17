@@ -40,8 +40,7 @@ many other projects I've worked on in the past, but as I was building out the fe
 run into several issues that forced me to rethink my approach, and come up with new solutions.
 At the end of the day, the feature could be greatly improved, but I'm of the opinion that it
 serves its purpose as it stands, considering the recommendation on time that should be spent
-executing this project. I opted for for using a UI framework such as bootstrap or, tailwind CSS,
-because I much rather just use flex for displaying rows and grids in my UI, I am using material ui- but only importing the social icons, I think material ui has a nice selection of icons.
+executing this project. I opted for for not using any UI frameworks such as bootstrap or, tailwind CSS, because I much rather just use flex for displaying rows and grids in my UI, and making it mobile responsive. I am using material ui- but only importing the social icons.
 
 ## Thought behind design of code
 
