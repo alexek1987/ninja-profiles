@@ -35,20 +35,18 @@ on implementing them, I like working with design, and when designing the card co
 the idea was to stay true to the mock up but also add my own slick and clean details to it.
 I also chose a few features which I hadn't done before, such as infinite scroll, because
 I think it's a nice feature, and I've already implemented it on other projects of mine too,
-after learning how to do it for this challenge! I decided to work with styled-components on this
-project becuase of the scoped styles, and the freedom it gives you to build custom
-components with CSS. I'm using Framer motion for animating the cards when they load,
-the reason for that is becaue it's a really nice tool that makes working with CSS keyframes
-enjoyable and fun, and it's really powerful. I tradionally used to deploy my projects to heroku,
-but I've more or less converted to Firebase, I think the guys at Firebase have created an
-excellent service with huge potential for no sql databases and seamless hosting and deployment,
-and I am a huge supporter.
-
+after learning how to do it for this challenge! The filtering is something I have implemented on
+many other projects I've worked on in the past, but as I was building out the feature I did
+run into several issues that forced me to rethink my approach, and come up with new solutions.
+At the end of the day, the feature could be greatly improved, but I'm of the opinion that it
+serves its purpose as it stands, considering the recommendation on time that should be spent
+executing this project. I opted for for using a UI framework such as bootstrap or, tailwind CSS,
+because I much rather just use flex for displaying rows and grids in my UI, I am using material ui- but only importing the social icons, I think material ui has a nice selection of icons.
 
 ## Thought behind design of code
 
 I wanted to keep the app simple, and not over-engineer it. That's why instead of splitting up some of the logic in the AllNinjaProfiles component and using global state, for example. Both filtering
-and mapping through the object and logic for infinite scroll is in there. Instead I'm using a custom hook to keep the fetching of data seperate.
+and mapping through the object and logic for infinite scroll is in there. Instead I'm using a custom hook to keep the fetching of data seperate. I decided to work with styled-components on this project becuase of the scoped styles, and the freedom it gives you to build custom components with CSS. I'm using Framer motion for animating the cards when they load, the reason for that is becaue it's a really nice tool that makes working with CSS keyframes enjoyable and fun, and it's really powerful. I tradionally used to deploy my projects to heroku, but I've more or less converted to Firebase, I think the guys at Firebase have created an excellent service with huge potential for no sql databases and seamless hosting and deployment, and I am a huge supporter.
 
 ## Installation notes
 
